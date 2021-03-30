@@ -8,7 +8,7 @@ print(art("random"))
 
 aprint("woman", number=13)
 
-tprint('IANA', font="alligator")
+tprint('IANA', font="rand")
 
 tprint("magic", font="fancy94", decoration="rand")
 
