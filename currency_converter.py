@@ -5,8 +5,6 @@ import json
 import os
 from pprint import pprint
 
-t = dt.datetime.now().strftime('%Y-%m-%d')
-
 
 def value_check():
     cur_folder = os.path.dirname(os.path.abspath(__file__))
@@ -45,6 +43,7 @@ def main(cur_f, cur_t, am, st_da):
 
 
 if __name__ == '__main__':
+    t = dt.datetime.now().strftime('%Y-%m-%d')
     parser = argparse.ArgumentParser(description='description...')
     parser.add_argument('currency_from', type=str)
     parser.add_argument('currency_to', type=str)
