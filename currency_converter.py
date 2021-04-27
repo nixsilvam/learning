@@ -46,9 +46,9 @@ def main(cur_f, cur_t, am, st_da):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='description...')
-    parser.add_argument('currency_from', type=str, default='USD')
-    parser.add_argument('currency_to', type=str, default='UAH')
-    parser.add_argument('amount', type=float, default=100.00)
+    parser.add_argument('currency_from', type=str)
+    parser.add_argument('currency_to', type=str)
+    parser.add_argument('amount', type=float, default=100.00, nargs='?')
     parser.add_argument('--start_date', type=str, default=t)
     args = parser.parse_args()
     currency_from, currency_to, amount, start_date = value_check()
