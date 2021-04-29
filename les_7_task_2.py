@@ -7,15 +7,15 @@ K = u'\u212a'
 
 
 def calc_t(t, scale):
-    if scale == '' or scale == 'C' or scale == 'С' or scale == 'c' or scale == 'с':
+    if scale == '' or scale.lower() == 'c' or scale.lower == 'с':
         print(C, '= ', str(t) + d)
         print(F, '= ', str(int(t * 1.8 + 32)) + d)
         print(K, '= ', str(int(t + 273.15)) + K)
-    if scale == 'F' or scale == 'f':
+    if scale.lower() == 'F':
         print(C, '= ', str(int((t - 32) / 1.8)) + d)
         print(F, '= ', str(t) + d)
         print(K, '= ', str(int((t + 459.67)) / 1.8) + K)
-    if scale == 'K' or scale == 'К' or scale == 'k' or scale == 'к':
+    if scale.lower() == 'k' or scale.lower() == 'к':
         print(C, '= ', str(int(t - 273.15)) + d)
         print(F, '= ', str(int(t * 1.8 - 459.67)) + d)
         print(K, '= ', str(t) + K)
