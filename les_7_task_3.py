@@ -5,7 +5,8 @@ from datetime import datetime
 
 def weather(city, days):
     url = 'http://api.openweathermap.org/data/2.5/forecast/daily?'
-    response = requests.get(url, params={units=metric, appid=f9ada9efec6a3934dad5f30068fdcbb8, 'q': city, 'cnt': days}).json()
+    response = requests.get(url, appid='f9ada9efec6a3934dad5f30068fdcbb8',
+                            units='metric',  params={'q': city, 'cnt': days}).json()
 #   print(response)  -- для себя чтобы удобнее было смотреть :)
     return response
 
