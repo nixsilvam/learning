@@ -3,11 +3,21 @@ import os
 import argparse
 
 
-def chek_args(row):
+def check_args(row):
     dict_args = {k: v for k, v in args_dict.items() if v is not None}
     del dict_args['o']
     save_flag = False
     for k, v in dict_args.items():
+        if k == 'brand':
+            k = 'BRAND'
+        if k == 'color':
+            k = 'COLOR'
+        if k == 'year':
+            k = 'MAKE_YEAR'
+        if k == 'fuel':
+            k = 'FUEL'
+        if k == 'reg_num':
+            k = 'N_REG_NEW'
         if row[k] == v:
             save_flag = True
         else:
@@ -20,9 +30,15 @@ def open_file():
     vehicles_file = os.path.join(cur_folder, args.o)
     with open(vehicles_file, 'r+', encoding='UTF-8') as f:
         csv_reader = csv.DictReader(f, ('BRAND', 'COLOR', 'MAKE_YEAR', 'FUEL'), delimiter=';')
-        with open('csvfile.csv', 'w+', encoding='UTF-8') as f1:
-            csv_writer = csv.DictWriter(f1, 'D_REG BRAND MODEL COLOR MAKE_YEAR FUEL NEW_REG_NEW')
-            csv_writer.writerows(list(csv_reader))
+        for row in csv_reader:
+            if check_args(row):
+                save_to_file(row)
+
+
+def save_to_file(row):
+    with open('csvfile.csv', 'w+', encoding='UTF-8') as f1:
+        csv_writer = csv.writer(f1)
+        csv_writer.writerow(row)
 
 
 if __name__ == '__main__':
