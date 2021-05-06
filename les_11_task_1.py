@@ -1,4 +1,5 @@
-def count_points(win: int, draw: int, loss: int):
+def count_points(win: int, draw: int, loss: int) -> int:
+    """The score of football matches"""
     return win * 3 + draw * 1 + loss * 0
 
 
