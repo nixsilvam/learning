@@ -1,4 +1,5 @@
-def fake_string(init_string: str, old_word: str, new_word: str, nums: int):
+def fake_string(init_string: str, old_word: str, new_word: str, nums: int) -> str:
+    """Replacing a word in a string"""
     return init_string.replace(old_word, new_word, nums)
 
 
