@@ -11,7 +11,7 @@ def calc_t(t, scale):
         print(C, '= ', str(t) + d)
         print(F, '= ', str(int(t * 1.8 + 32)) + d)
         print(K, '= ', str(int(t + 273.15)) + K)
-    if scale.lower() == 'F':
+    if scale == 'F':
         print(C, '= ', str(int((t - 32) / 1.8)) + d)
         print(F, '= ', str(t) + d)
         print(K, '= ', str(int((t + 459.67)) / 1.8) + K)
