@@ -1,4 +1,5 @@
-def str_change(input_str: str):
+def str_change(input_str: str) -> str:
+    """The longest word in string"""
     return max((x for x in input_str.split()), key=len)
 
 
