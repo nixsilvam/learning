@@ -1,23 +1,28 @@
 import csv
 import os
 import argparse
+import sys
 
 
-def check_args(row):
+def check_args():
     dict_args = {k: v for k, v in args_dict.items() if v is not None}
+    if not dict_args:
+        sys.exit(0)
     del dict_args['o']
+    map_dict = {'brand': 'BRAND',
+                'color': 'COLOR',
+                'year': 'MAKE_YEAR',
+                'fuel': 'FUEL',
+                'reg_num': 'N_REG_NEW'}
+    for i in dict_args:
+        if i in map_dict:
+            dict_args[map_dict[i]] = dict_args.pop(i)
+    return dict_args
+
+
+def check_flag(row, fin_dict):
     save_flag = False
-    for k, v in dict_args.items():
-        if k == 'brand':
-            k = 'BRAND'
-        if k == 'color':
-            k = 'COLOR'
-        if k == 'year':
-            k = 'MAKE_YEAR'
-        if k == 'fuel':
-            k = 'FUEL'
-        if k == 'reg_num':
-            k = 'N_REG_NEW'
+    for k, v in fin_dict.items():
         if row[k] == v:
             save_flag = True
         else:
@@ -26,19 +31,28 @@ def check_args(row):
 
 
 def open_file():
+    result = []
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     vehicles_file = os.path.join(cur_folder, args.o)
-    with open(vehicles_file, 'r+', encoding='UTF-8') as f:
-        csv_reader = csv.DictReader(f, ('BRAND', 'COLOR', 'MAKE_YEAR', 'FUEL'), delimiter=';')
+    with open(vehicles_file, 'r', encoding='UTF-8') as f:
+        csv_reader = csv.DictReader(f, ('BRAND', 'COLOR', 'MAKE_YEAR', 'FUEL', 'N_REG_NEW'), delimiter=';')
         for row in csv_reader:
-            if check_args(row):
-                save_to_file(row)
+            if check_flag(row, check_args()):
+                result.append(row)
+    return result
 
 
-def save_to_file(row):
-    with open('csvfile.csv', 'w+', encoding='UTF-8') as f1:
-        csv_writer = csv.writer(f1)
-        csv_writer.writerow(row)
+def file_name(fin_dict):
+    name_list = [v for v in fin_dict.values]
+    vehicle_name = '_'.join(name_list) + '.csv'
+    return vehicle_name
+
+
+def save_to_file(result, vehicle_name):
+    with open(vehicle_name, 'w+', encoding='UTF-8') as f1:
+        csv_writer = csv.DictWriter(f1, ('D_REG', 'BRAND', 'MODEL', 'COLOR', 'MAKE_YEAR',
+                                         'FUEL', 'NEW_REG_NEW'))
+        csv_writer.writerow(result)
 
 
 if __name__ == '__main__':
@@ -50,12 +64,9 @@ if __name__ == '__main__':
     parser.add_argument('--fuel', type=str, help='Fuel type', default='')
     parser.add_argument('--reg_num', nargs='?')
     args = parser.parse_args()
-    if args.brand == '' and args.color == '' and args.year == '' and args.fuel == '':
-        import sys
-        sys.exit(0)
-    else:
-        args_dict = vars(parser.parse_args())
+    args_dict = vars(parser.parse_args())
     print(args_dict)
-    open_file()
-
-
+    final_dict = check_args()
+    result_list = open_file()
+    final_name = file_name(final_dict)
+    save_to_file(result_list, final_name)
