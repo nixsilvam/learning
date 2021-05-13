@@ -52,7 +52,7 @@ def save_to_file(result, vehicle_name):
     with open(vehicle_name, 'w+', encoding='UTF-8') as f1:
         csv_writer = csv.DictWriter(f1, ('D_REG', 'BRAND', 'MODEL', 'COLOR', 'MAKE_YEAR',
                                          'FUEL', 'NEW_REG_NEW'))
-        csv_writer.writerow(result)
+        csv_writer.writerows(result)
 
 
 if __name__ == '__main__':
