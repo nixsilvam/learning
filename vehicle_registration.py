@@ -17,34 +17,35 @@ def check_args():
     for i in dict_args:
         if i in map_dict:
             dict_args[map_dict[i]] = dict_args.pop(i)
-    return dict_args
+    final_dict_args = {k: v for k, v in dict_args.items() if v != ''}
+    return final_dict_args
 
 
 def check_flag(row, fin_dict):
     save_flag = False
     for k, v in fin_dict.items():
-        if row[v] == v:
+        if row[k] == v:
             save_flag = True
         else:
             save_flag = False
     return save_flag
 
 
-def open_file():
+def open_file(final_dic):
     result = []
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     vehicles_file = os.path.join(cur_folder, args.o)
     with open(vehicles_file, 'r', encoding='UTF-8') as f:
-        csv_reader = csv.DictReader(f, ('BRAND', 'COLOR', 'MAKE_YEAR', 'FUEL', 'N_REG_NEW'), delimiter=';')
+        csv_reader = csv.DictReader(f, ([k for k in final_dic.keys()]), delimiter=';')
         for row in csv_reader:
-            if check_flag(row, check_args()):
+            if check_flag(row, check_args()) is True:
                 result.append(row)
     return result
 
 
 def file_name(fin_dict):
-    name_list = [v for v in fin_dict.values]
-    vehicle_name = '_'.join(name_list) + '.csv'
+    name_list = [v for v in fin_dict.values()]
+    vehicle_name = str('_'.join(name_list) + '.csv')
     return vehicle_name
 
 
@@ -67,6 +68,6 @@ if __name__ == '__main__':
     args_dict = vars(parser.parse_args())
     print(args_dict)
     final_dict = check_args()
-    result_list = open_file()
+    result_list = open_file(final_dict)
     final_name = file_name(final_dict)
     save_to_file(result_list, final_name)
