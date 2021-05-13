@@ -23,7 +23,7 @@ def check_args():
 def check_flag(row, fin_dict):
     save_flag = False
     for k, v in fin_dict.items():
-        if row[k] == v:
+        if row[v] == v:
             save_flag = True
         else:
             save_flag = False
