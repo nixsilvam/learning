@@ -18,25 +18,25 @@ class Bankaccount:
 
     def debit(self, x: float):
         transaction = [x, 'debit', self.nowdate]
-        self.balance += x
+        self.transactions.append(transaction)
+        self.balance += transaction[0]
         transaction_name = ('Deposit ' + str(x) + ' pumpkins for ' + self.account_name + ' Account at ' + self.nowdate)
         print(transaction_name)
-        self.transactions.append(transaction)
-
         return self.balance, self.transactions
 
     def credit(self, x: float):
         if self.balance >= x:
-            transaction = [x, 'credit', self.nowdate]
             commission = 0.001 * x
-            self.balance -= (x + commission)
+            transaction = [x - commission, 'credit', self.nowdate]
+            self.transactions.append(transaction)
+            self.balance -= (transaction[0])
             transaction_name = ('Withdraw ' + str(x + commission) + ' pumpkins ' + '(Pumpkin commission: ' +
                                 str(commission) + ') from ' + self.account_name + ' Account at ' + self.nowdate)
             print(transaction_name)
-            self.transactions.append(transaction)
+            
         else:
-            print('Sorry, you don\'t have enough pumpkins to complete the transaction!')
-            return self.balance, self.transactions
+            print('Sorry, you don\'t have enough pumpkins to complete the transaction')
+        return self.balance, self.transactions
 
     def get_balance(self):
         return '%.2f' % self.balance, 'pumpkins'
@@ -44,7 +44,6 @@ class Bankaccount:
 
 if __name__ == "__main__":
     Goat = Bankaccount('Goat')
-    Goat.credit(55)
     Goat.debit(55)
     print(Goat.uniqid)
     Goat.debit(135)
@@ -52,3 +51,5 @@ if __name__ == "__main__":
     print(Goat.get_balance())
     for n in Goat.transactions:
         print(n)
+    Goat.credit(300)
+    Goat.credit(100)
