@@ -35,7 +35,7 @@ class Bankaccount:
             print(transaction_name)
             self.transactions.append(transaction)
         else:
-            print('Oh, sorry, but there are no pumpkins anymore!')
+            print('Sorry, you don\'t have enough pumpkins to complete the transaction!')
             return self.balance, self.transactions
 
     def get_balance(self):
