@@ -19,7 +19,7 @@ class Bankaccount:
         self.balance += x
         transaction = ('Deposit ' + str(x) + ' pumpkins for ' + self.account_name + ' Account at ' +
                        dt.now().strftime('%Y.%m.%d  %H:%M:%S'))
-        print(str(transaction))
+        print(transaction)
         self.transactions.append(transaction)
         return self.balance, self.transactions
 
@@ -36,11 +36,7 @@ class Bankaccount:
             return self.balance, self.transactions
 
     def get_balance(self):
-        print('%.2f' % self.balance, 'pumpkins')
-
-    def get_transactions(self):
-        for x in self.transactions:
-            print(x)
+        return '%.2f' % self.balance, 'pumpkins'
 
 
 if __name__ == "__main__":
@@ -50,5 +46,6 @@ if __name__ == "__main__":
     print(Goat.uniqid)
     Goat.debit(135)
     Goat.credit(88)
-    Goat.get_balance()
-    Goat.get_transactions()
+    print(Goat.get_balance())
+    for n in Goat.transactions:
+        print(n)
