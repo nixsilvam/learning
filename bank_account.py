@@ -39,7 +39,7 @@ class Bankaccount:
         return self.transactions
 
     def get_balance(self):
-        return '%.2f' % sum([x[0] for x in self.transactions])
+        return '%.2f' % sum([x[0] for x in self.transactions]) + ' pumpkins'
 
     def get_transactions(self):
         for x in self.transactions:
