@@ -4,7 +4,7 @@ import uuid
 
 class Bankaccount:
     """Bank account"""
-    nowdate = dt.now().strftime('%Y.%m.%d  %H:%M:%S')
+    nowdate = str
 
     def __repr__(self):
         return 'Pumpkin Trust'
@@ -17,39 +17,42 @@ class Bankaccount:
         self.transactions = []
 
     def debit(self, x: float):
-        transaction = [x, 'debit', self.nowdate]
+        transaction_time = dt.now().strftime('%Y.%m.%d  %H:%M:%S')
+        transaction = [x, 'debit', transaction_time]
         self.transactions.append(transaction)
-        self.balance += transaction[0]
-        transaction_name = ('Deposit ' + str(x) + ' pumpkins for ' + self.account_name + ' Account at ' + self.nowdate)
+        transaction_name = ('Deposit ' + str(x) + ' pumpkins for ' +
+                            self.account_name + ' Account at ' + transaction_time)
         print(transaction_name)
-        return self.balance, self.transactions
+        return self.transactions
 
     def credit(self, x: float):
-        if self.balance >= x:
-            commission = 0.001 * x
-            transaction = [x - commission, 'credit', self.nowdate]
-            self.transactions.append(transaction)
-            self.balance -= (transaction[0])
-            transaction_name = ('Withdraw ' + str(x + commission) + ' pumpkins ' + '(Pumpkin commission: ' +
-                                str(commission) + ') from ' + self.account_name + ' Account at ' + self.nowdate)
-            print(transaction_name)
-            
-        else:
-            print('Sorry, you don\'t have enough pumpkins to complete the transaction')
-        return self.balance, self.transactions
+        transaction_time = dt.now().strftime('%Y.%m.%d  %H:%M:%S')
+        commission = 0.001 * x
+        transaction = [- (x - commission), 'credit', transaction_time]
+        self.transactions.append(transaction)
+        transaction_name = ('Withdraw ' + str(x + commission) + ' pumpkins ' + '(Pumpkin commission: ' +
+                            str(commission) + ') from ' + self.account_name + ' Account at ' + transaction_time)
+        print(transaction_name)
+        return self.transactions
 
     def get_balance(self):
-        return '%.2f' % self.balance, 'pumpkins'
+        balance_result = sum([x[0] for x in self.transactions])
+        return '%.2f' % balance_result + ' pumpkins' if balance_result >= 0.00 \
+            else 'Sorry, you don\'t have enough pumpkins to get the balance \n' \
+                 + '( %.2f' % balance_result + ' pumpkins )'
 
 
 if __name__ == "__main__":
     Goat = Bankaccount('Goat')
     Goat.debit(55)
     print(Goat.uniqid)
-    Goat.debit(135)
+    Goat.credit(135)
     Goat.credit(88)
     print(Goat.get_balance())
     for n in Goat.transactions:
         print(n)
-    Goat.credit(300)
+    Goat.debit(300)
     Goat.credit(100)
+    for n in Goat.transactions:
+        print(n)
+    print(Goat.get_balance())
