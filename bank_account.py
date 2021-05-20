@@ -27,19 +27,23 @@ class Bankaccount:
 
     def credit(self, x: float):
         transaction_time = dt.now().strftime('%Y.%m.%d  %H:%M:%S')
-        commission = 0.001 * x
-        transaction = [- (x - commission), 'credit', transaction_time]
-        self.transactions.append(transaction)
-        transaction_name = ('Withdraw ' + str(x + commission) + ' pumpkins ' + '(Pumpkin commission: ' +
-                            str(commission) + ') from ' + self.account_name + ' Account at ' + transaction_time)
-        print(transaction_name)
+        commission_sum = x + (0.001 * x)
+        if sum([trans[0] for trans in self.transactions]) >= commission_sum:
+            transaction = [- commission_sum, 'credit', transaction_time]
+            self.transactions.append(transaction)
+            transaction_name = ('Withdraw ' + str(commission_sum) + ' pumpkins ' + '(Pumpkin commission: ' +
+                                str(0.001 * x) + ') from ' + self.account_name + ' Account at ' + transaction_time)
+            print(transaction_name)
+        else:
+            print('Sorry, you don\'t have enough pumpkins to make the transaction')
         return self.transactions
 
     def get_balance(self):
-        balance_result = sum([x[0] for x in self.transactions])
-        return '%.2f' % balance_result + ' pumpkins' if balance_result >= 0.00 \
-            else 'Sorry, you don\'t have enough pumpkins to get the balance \n' \
-                 + '( %.2f' % balance_result + ' pumpkins )'
+        return '%.2f' % sum([x[0] for x in self.transactions])
+
+    def get_transactions(self):
+        for x in self.transactions:
+            print(x)
 
 
 if __name__ == "__main__":
@@ -47,10 +51,9 @@ if __name__ == "__main__":
     Goat.debit(55)
     print(Goat.uniqid)
     Goat.credit(135)
-    Goat.credit(88)
+    Goat.debit(88)
     print(Goat.get_balance())
-    for n in Goat.transactions:
-        print(n)
+    Goat.get_transactions()
     Goat.debit(300)
     Goat.credit(100)
     for n in Goat.transactions:
