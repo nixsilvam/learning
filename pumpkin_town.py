@@ -43,26 +43,25 @@ class PumpkinCity:
         return f'All population of {self.cityname} is {population}'
 
 
-pumpkin = PumpkinCity('Pumpkin')
-pumpkin.pump_city()
-print(pumpkin.population)
+if __name__ == '__main__':
+    pumpkin = PumpkinCity('Pumpkin')
+    pumpkin.pump_city()
+    print(pumpkin.population)
 
-city_17 = PumpkinCity('City-17')
-city_17.pump_city()
-
-
-print(city_17.streets)
+    city_17 = PumpkinCity('City-17')
+    city_17.pump_city()
+    print(city_17.streets)
 
 # пример удаления улиц, с добавлением похожаяя история, а еще это все можно тоже в методы добавить,
 # но задча решена итак, исходя из условий :)
 
-for city17_street in city_17.streets:
-    if city17_street.num == 0:
-        city_17.streets.remove(city17_street)
+    for city17_street in city_17.streets:
+        if city17_street.num == 0:
+            city_17.streets.remove(city17_street)
 
-for city17_street in city_17.streets:
-    for city17_house in city17_street.houses:
-        if city17_house.num == 0:
-            city17_street.houses.remove(city17_house)
+    for city17_street in city_17.streets:
+        for city17_house in city17_street.houses:
+            if city17_house.num == 0:
+                city17_street.houses.remove(city17_house)
 
-print(city_17.population)
+    print(city_17.population)
