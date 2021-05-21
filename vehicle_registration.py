@@ -12,8 +12,8 @@ def check_args(row):
     map_dict = {'brand': 'BRAND',
                 'color': 'COLOR',
                 'year': 'MAKE_YEAR',
-                'fuel': 'FUEL',
-                'reg_num': 'N_REG_NEW'}
+                'fuel': 'FUEL'}
+    del dict_args['reg_num']
     result = []
     for k, v in dict_args.items():
         if row[map_dict[k]] == v:
@@ -39,7 +39,8 @@ def file_name():
     name_dict = {k: v for k, v in args_dict.items() if v is not None}
     del name_dict['o']
     name_list = [v for v in name_dict.values()]
-
+    if flag_regnum:
+        name_list.append('regnum')
     print(name_list)
     vehicle_name = str('_'.join(name_list) + '.csv')
     print(vehicle_name)
@@ -62,18 +63,16 @@ if __name__ == '__main__':
     parser.add_argument('--color', help='Vehicle colour')
     parser.add_argument('--year', type=str, help='Year of vehicle production')
     parser.add_argument('--fuel', type=str, help='Fuel type')
-    parser.add_argument('--reg_num', nargs='?')
+    parser.add_argument('--reg_num', type=str)
     args = parser.parse_args()
     args_dict = vars(parser.parse_args())
     print(args_dict)
     fin_result = open_file()
-    if args.reg_num == 'yes':
-        flag_reg = True
+    if args.reg_num == 'get':
+        flag_regnum = True
         fieldnames = ['D_REG', 'BRAND', 'MODEL', 'MAKE_YEAR', 'COLOR', 'FUEL', 'N_REG_NEW']
     else:
-        flag_reg = False
+        flag_regnum = False
         fieldnames = ['D_REG', 'BRAND', 'MODEL', 'MAKE_YEAR', 'COLOR', 'FUEL']
 
     save_to_file(fin_result, fieldnames)
-
-
