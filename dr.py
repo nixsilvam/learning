@@ -117,13 +117,15 @@ class JasminTea(Product):
 class Store:
     def __init__(self, amount=5):
         self.amount = amount
-        self.pricelist = [[Espresso()], [Doppio()], [Americano()], [Latte()], [BlackTea()], [EarlGrey()], [Bread()],
-                          [GingerTea()], [GreenTea()], [JasminTea()]]
-        self.available = [prod * self.amount for prod in self.pricelist]
+        self.pricelist = [Espresso, Doppio, Americano, Latte, BlackTea, EarlGrey, Bread,
+                          GingerTea, GreenTea, JasminTea]
 
-    def coffee(self):
-        for prod in self.available:
-            print(prod.__dict__)
+        self.available = []
+        
+        Product(): for x in self.pricelist:
+             
+
+
 
 
 
@@ -131,7 +133,4 @@ class Store:
 pumpkin = Store()
 print(pumpkin.pricelist)
 print(pumpkin.available)
-pumpkin.coffee()
-
-
 
