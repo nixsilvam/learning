@@ -2,7 +2,7 @@ import re
 
 
 def number_format(string: str):
-    numb_match = re.match(r'.*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*', string)
+    numb_match = re.match(r'(\d{3})(\d{3})(\d{2})(\d{2})', string)
     if numb_match:
         numb_list = numb_match.groups()
         if numb_list[0] == '0':
