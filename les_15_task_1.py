@@ -13,10 +13,7 @@ def auto_list() -> list:
 
 def if_autonumber(user_string: str) -> bool:
     match = re.fullmatch(r'[A-CEHIKMOPTXАВСЕНІМОКРТХ]{2}\d{4}[A-CKHIАВСІКН][A-CEHIKMOPTXАВСЕНІМОКРТХ]', user_string)
-    if match:
-        return True
-    else:
-        return False
+    return bool(match)
 
 
 def get_region(text):
@@ -30,7 +27,7 @@ def get_region(text):
                 return n['Регіон'] + ' 2013г'
     else:
         raise Exception('Error of vehicle number')
-        pass
+
 
 
 if __name__ == '__main__':
