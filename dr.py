@@ -15,122 +15,139 @@ class Prodlist:
 class Product:
 
     def __init__(self):
-        self.prlist = []
-        self.prodlist()
+        self.prlist = Prodlist().prodlist
         self.name = 'None'
         self.prtype = 'Not coffee or tea'
         self.price = '0'
 
+
+class BaseProduct(Product):
+    def __init__(self, name):
+        super().__init__()
+        for product in self.prlist:
+            if product['Наименование'] == name:
+                self.name = product['Наименование']
+                self.prtype = product['Тип']
+                self.price = product['Цена']
+                break
+
     def __str__(self):
         return self.prtype + ': ' + self.name + ', Цена: ' + self.price + ' грн'
 
-    def prodlist(self) -> list:
-        with open('inventory.csv', 'r+', encoding='UTF-8') as File:
-            csv_reader = csv.DictReader(File, delimiter=',')
-            for row in csv_reader:
-                self.prlist.append(row)
-        return self.prlist
 
-# можно ли создавать подклассы какой-то командой по списку а не вручную? Я что-то упустила?
-# А то много повторяющихся строк получается...
-
-
-class Espresso(Product):
+class Espresso(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[0]['Наименование']
-        self.prtype = self.prlist[0]['Тип']
-        self.price = self.prlist[0]['Цена']
+        name = 'Эспрессо'
+        super().__init__(name)
 
 
-class Doppio(Product):
+class Doppio(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[1]['Наименование']
-        self.prtype = self.prlist[1]['Тип']
-        self.price = self.prlist[1]['Цена']
+        name = 'Доппио'
+        super().__init__(name)
 
 
-class Americano(Product):
+class Americano(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[2]['Наименование']
-        self.prtype = self.prlist[2]['Тип']
-        self.price = self.prlist[2]['Цена']
+        name = 'Американо'
+        super().__init__(name)
 
 
-class Latte(Product):
+class Latte(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[3]['Наименование']
-        self.prtype = self.prlist[3]['Тип']
-        self.price = self.prlist[3]['Цена']
+        name = 'Латте'
+        super().__init__(name)
 
 
-class BlackTea(Product):
+class BlackTea(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[4]['Наименование']
-        self.prtype = self.prlist[4]['Тип']
-        self.price = self.prlist[4]['Цена']
+        name = 'Черный Чай'
+        super().__init__(name)
 
 
-class EarlGrey(Product):     # с бергамотом <3
+class EarlGrey(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[5]['Наименование']
-        self.prtype = self.prlist[5]['Тип']
-        self.price = self.prlist[5]['Цена']
+        name = 'Earl Grey'
+        super().__init__(name)
 
 
-class Bread(Product):
+class Bread(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[6]['Наименование']
-        self.price = self.prlist[6]['Цена']
+        name = 'Хлеб'
+        super().__init__(name)
 
 
-class GingerTea(Product):
+class GingerTea(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[7]['Наименование']
-        self.prtype = self.prlist[7]['Тип']
-        self.price = self.prlist[7]['Цена']
+        name = 'Имбирный чай'
+        super().__init__(name)
 
 
-class GreenTea(Product):
+class GreenTea(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[8]['Наименование']
-        self.prtype = self.prlist[8]['Тип']
-        self.price = self.prlist[8]['Цена']
+        name = 'Зеленый чай'
+        super().__init__(name)
 
 
-class JasminTea(Product):
+class JasminTea(BaseProduct):
     def __init__(self):
-        super().__init__()
-        self.name = self.prlist[9]['Наименование']
-        self.prtype = self.prlist[9]['Тип']
-        self.price = self.prlist[9]['Цена']
+        name = 'Зеленый чай с жасмином'
+        super().__init__(name)
 
 
 class Store:
     def __init__(self, amount=5):
-        self.amount = amount
         self.pricelist = [Espresso, Doppio, Americano, Latte, BlackTea, EarlGrey, Bread,
                           GingerTea, GreenTea, JasminTea]
 
-        self.available = []
-        
-        Product(): for x in self.pricelist:
-             
+        self.available = [prod() for i in range(amount) for prod in self.pricelist]
+        self.balance = 0
+        self.earn = []
 
+    @property
+    def coffee(self):
+        coffee_list = [prod.name for prod in self.available if prod.prtype == 'coffee']
+        coffee_dict = dict((x, coffee_list.count(x)) for x in set(coffee_list))
+        return coffee_dict
 
+    @property
+    def tea(self):
+        tea_list = [prod.name for prod in self.available if prod.prtype == 'tea']
+        tea_dict = dict((x, tea_list.count(x)) for x in set(tea_list))
+        return tea_dict
 
+    @property
+    def allgoods(self):
+        allgoods_list = [prod.name for prod in self.available]
+        allgoods_dict = dict((x, allgoods_list.count(x)) for x in set(allgoods_list))
+        return allgoods_dict
 
+    @property
+    def values(self):
+        values = [int(prod.price) for prod in self.available]
+        return sum(values)
+
+    def sell(self, product: str, qnt=1):
+        index = 0
+        for prod in self.available:
+            if product == prod.name:
+                self.available.remove(prod)
+                self.balance += int(prod.price)
+                self.earn.append(prod)
+                index += 1
+            if index == qnt:
+                break
 
 
 pumpkin = Store()
 print(pumpkin.pricelist)
-print(pumpkin.available)
-
+print(pumpkin.coffee)
+print(pumpkin.tea)
+print(pumpkin.allgoods)
+print(pumpkin.values)
+pumpkin.sell('Эспрессо')
+print(pumpkin.allgoods)
+print(pumpkin.values)
+print(pumpkin.balance)
+print(pumpkin.earn)
+print(Bread)
